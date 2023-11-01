@@ -536,6 +536,9 @@ def train():
     parser = config_parser()
     args = parser.parse_args()
 
+    # Load data splits.
+    
+
     # Load data
     K = None
     if args.dataset_type == 'llff':
