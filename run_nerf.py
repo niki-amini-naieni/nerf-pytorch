@@ -422,6 +422,7 @@ def config_parser():
 
     import configargparse
     parser = configargparse.ArgumentParser()
+    parser.add_argument('--data_split_file', type=str, default='./llff_data_splits.json', help='name of file with data splits')
     parser.add_argument('--config', is_config_file=True, 
                         help='config file path')
     parser.add_argument("--expname", type=str, 
@@ -536,8 +537,10 @@ def train():
     parser = config_parser()
     args = parser.parse_args()
 
-    # Load data splits.
-    
+    # Load train split indices.
+    all_data_splits = json.load(open(args.data_split_file))
+    scene_data_split = all_data_splits[args.expname]
+    train_inds = scene_data_split["train"]
 
     # Load data
     K = None
@@ -556,8 +559,7 @@ def train():
             i_test = np.arange(images.shape[0])[::args.llffhold]
 
         i_val = i_test
-        i_train = np.array([i for i in np.arange(int(images.shape[0])) if
-                        (i not in i_test and i not in i_val)])
+        i_train = np.array(train_inds)
 
         print('DEFINING BOUNDS')
         if args.no_ndc:
