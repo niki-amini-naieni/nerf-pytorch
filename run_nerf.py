@@ -539,7 +539,7 @@ def train():
 
     # Load train split indices.
     all_data_splits = json.load(open(args.data_split_file))
-    scene_data_split = all_data_splits[args.expname]
+    scene_data_split = all_data_splits[args.expname.split("_")[0]]
     train_inds = scene_data_split["train"]
 
     # Load data
